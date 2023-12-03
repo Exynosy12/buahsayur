@@ -83,7 +83,7 @@ var checkoutAction = async() => {
     responseText = await res.data;
 
     // Masukkan data respons ke dalam variabel dan lanjutkan dengan proses checkout
-    checkout.process(responseText.merchantOrderId, {
+    checkout.process(responseText.reference, {
       defaultLanguage: "id", //opsional pengaturan bahasa
       successEvent: function(result) {
         // Tambahkan fungsi sesuai kebutuhan anda
