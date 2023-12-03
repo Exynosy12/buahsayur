@@ -78,27 +78,12 @@ const loadProducts = async() => {
 
 var checkoutAction = async() => {
   try {
-    // Lakukan HTTP request untuk membuat invoice
-    let response = await fetch('https://buahsayursultan.onrender.com/create-invoice', {
-      method: 'POST', // atau 'GET', tergantung pada API
-      headers: {
-        'Content-Type': 'application/json',
-        // Tambahkan header lain yang diperlukan oleh API
-      },
-      body: JSON.stringify({
-        // Isi dengan data yang diperlukan oleh API untuk membuat invoice
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    // Dapatkan data respons
-    let data = await response.json();
+    url = 'https://buahsayursultan.onrender.com/create-invoice';
+    let res = await axios.post(url);
+    responseText = await res.data;
 
     // Masukkan data respons ke dalam variabel dan lanjutkan dengan proses checkout
-    checkout.process(data.merchantOrderId, {
+    checkout.process(responseText.merchantOrderId, {
       defaultLanguage: "id", //opsional pengaturan bahasa
       successEvent: function(result) {
         // Tambahkan fungsi sesuai kebutuhan anda
