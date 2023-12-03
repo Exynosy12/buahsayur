@@ -76,7 +76,7 @@ const loadProducts = async() => {
 
 }
 
-var checkout = async() => {
+var checkoutAction = async() => {
     
     checkout.process("DXXXXS875LXXXX32IJZ7", {
     defaultLanguage: "id", //opsional pengaturan bahasa
