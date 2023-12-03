@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const crypto = require('crypto');
 
 const app = express()
 var port = process.env.PORT || 3000;
@@ -24,11 +25,40 @@ app.post('/create-invoice', async (req, res) => {
     const timestamp = Date.now().toString();
     const signature = crypto.createHash('sha256').update(merchantCode + timestamp + merchantKey).digest('hex');
 
-    const data = {
+  const data = {
         paymentAmount: 40000,
-        merchantOrderId: Date.now().toString(),
+        merchantOrderId: timestamp.toString(), // unique ID dari merchant
         productDetails: 'Test Pay with duitku',
-        // Lanjutkan dengan data lainnya...
+        email: 'test@test.com', // email pelanggan
+        phoneNumber: '08123456789', // nomor telepon pelanggan
+        additionalParam: '',
+        merchantUserInfo: '',
+        customerVaName: 'John Doe', // nama pelanggan pada konfirmasi bank
+        callbackUrl: 'http://example.com/api-pop/backend/callback.php', // URL untuk callback
+        returnUrl: 'http://example.com/api-pop/backend/redirect.php', // URL untuk redirect
+        expiryPeriod: 10, // waktu kedaluwarsa dalam menit
+        customerDetail: {
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'test@test.com',
+            phoneNumber: '08123456789',
+            billingAddress: {
+                firstName: 'John',
+                lastName: 'Doe',
+                address: 'Jl. Kembangan Raya',
+                city: 'Jakarta',
+                postalCode: '11530',
+                phone: '08123456789',
+                countryCode: 'ID'
+            },
+            shippingAddress: {
+                // Sama dengan billing address atau sesuaikan
+            }
+        },
+        itemDetails: [
+            { name: 'Test Item 1', price: 10000, quantity: 1 },
+            { name: 'Test Item 2', price: 30000, quantity: 1 }
+        ],
     };
 
     const config = {
