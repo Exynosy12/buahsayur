@@ -16,6 +16,38 @@ app.get('/', (req, res) => {
     res.send("API deployment successful");
 });
 
+// Konfigurasi Duitku
+const merchantCode = 'DS17453';
+const merchantKey = '0b5182cc15e4774f6af74c0c6c5f759c';
+
+app.post('/create-invoice', async (req, res) => {
+    const timestamp = Date.now().toString();
+    const signature = crypto.createHash('sha256').update(merchantCode + timestamp + merchantKey).digest('hex');
+
+    const data = {
+        paymentAmount: 40000,
+        merchantOrderId: Date.now().toString(),
+        productDetails: 'Test Pay with duitku',
+        // Lanjutkan dengan data lainnya...
+    };
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'x-duitku-signature': signature,
+            'x-duitku-timestamp': timestamp,
+            'x-duitku-merchantcode': merchantCode
+        }
+    };
+
+    try {
+        const response = await axios.post('https://api-sandbox.duitku.com/api/merchant/createinvoice', data, config);
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).send(error.toString());
+    }
+});
+
 app.post('/product', (req, res) => {
     const product = req.body;
 
