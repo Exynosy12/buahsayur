@@ -8,7 +8,6 @@
     <title>Automatic Billing</title>
 
     <link rel="stylesheet" href="asset/css/style.css">
-    <script src="https://app-sandbox.duitku.com/lib/js/duitku.js"></script>
 
     <script src="asset/scripts/script.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -32,7 +31,7 @@
 
     <!--Checkout Button-->
     <div id="final">
-        <button id="2" class="checkout" onclick="bayar()">CHECKOUT</button>
+        <button class="checkout" onclick="bayar()">CHECKOUT</button>
     </div>
 
 
@@ -50,6 +49,7 @@
 
 
     <!--API data update listener-->
+    <script src="https://app-sandbox.duitku.com/lib/js/duitku.js"></script>
     <script>
         window.onload = () => {
             setInterval(function() {
@@ -58,7 +58,7 @@
         }
         
 function bayar(){
-    checkout.process("DXXXXS875LXXXX32IJZ7", {
+    checkout.process("ijijijkljkjii", {
 defaultLanguage: "id", //opsional pengaturan bahasa
 successEvent: function(result){
 // tambahkan fungsi sesuai kebutuhan anda
@@ -89,7 +89,7 @@ console.log(result);
 alert('customer closed the popup without finishing the payment');
 deleteProducts();
 }
-});
+})
 }
     </script>
 
