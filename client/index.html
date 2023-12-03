@@ -32,7 +32,7 @@
 
     <!--Checkout Button-->
     <div id="final">
-        <button id="2" class="checkout" onclick="checkoutAction()">CHECKOUT</button>
+        <button id="2" class="checkout" onclick="bayar()">CHECKOUT</button>
     </div>
 
 
@@ -56,6 +56,40 @@
                 loadProducts();
             }, 100);
         }
+        
+        function bayar(){
+                checkout.process("DXXXXS875LXXXX32IJZ7", {
+    defaultLanguage: "id", //opsional pengaturan bahasa
+    successEvent: function(result){
+    // tambahkan fungsi sesuai kebutuhan anda
+        console.log('success');
+        console.log(result);
+        alert('Payment Success');
+        
+         deleteProducts();
+    },
+    pendingEvent: function(result){
+    // tambahkan fungsi sesuai kebutuhan anda
+        console.log('pending');
+        console.log(result);
+        alert('Payment Pending');
+         deleteProducts();
+    },
+    errorEvent: function(result){
+    // tambahkan fungsi sesuai kebutuhan anda
+        console.log('error');
+        console.log(result);
+        alert('Payment Error');
+         deleteProducts();
+    },
+    closeEvent: function(result){
+    // tambahkan fungsi sesuai kebutuhan anda
+        console.log('customer closed the popup without finishing the payment');
+        console.log(result);
+        alert('customer closed the popup without finishing the payment');
+         deleteProducts();
+    }
+            }
     </script>
 
 
