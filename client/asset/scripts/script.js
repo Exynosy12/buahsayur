@@ -85,29 +85,34 @@ var checkoutAction = async() => {
         console.log('success');
         console.log(result);
         alert('Payment Success');
+        
+         deleteProducts();
     },
     pendingEvent: function(result){
     // tambahkan fungsi sesuai kebutuhan anda
         console.log('pending');
         console.log(result);
         alert('Payment Pending');
+         deleteProducts();
     },
     errorEvent: function(result){
     // tambahkan fungsi sesuai kebutuhan anda
         console.log('error');
         console.log(result);
         alert('Payment Error');
+         deleteProducts();
     },
     closeEvent: function(result){
     // tambahkan fungsi sesuai kebutuhan anda
         console.log('customer closed the popup without finishing the payment');
         console.log(result);
         alert('customer closed the popup without finishing the payment');
+         deleteProducts();
     }
 }); 
 
         
 
     // window.location.href = "upi://pay?pa=shebinjosejacob2014@oksbi&pn=TXN9656549238&tn=A&am=1&cu=INR&url=https://assettracker.cf/"*/
-    deleteProducts();
+   
 }
