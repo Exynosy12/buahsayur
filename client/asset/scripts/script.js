@@ -77,41 +77,35 @@ const loadProducts = async() => {
 }
 
 var checkout = async() => {
-    document.getElementById('2').innerHTML = "<span class='loader-16' style='margin-left: 44%;'></span>"
-    var payable = 0;
-    url = 'https://buahsayursultan.onrender.com/product';
-
-    let res = await axios.get(url);
-    responseText = await res.data;
-    products = responseText;
-
-    for (let product of products) {
-        payable = payable + parseFloat(product.payable);
+    
+    checkout.process("DXXXXS875LXXXX32IJZ7", {
+    defaultLanguage: "id", //opsional pengaturan bahasa
+    successEvent: function(result){
+    // tambahkan fungsi sesuai kebutuhan anda
+        console.log('success');
+        console.log(result);
+        alert('Payment Success');
+    },
+    pendingEvent: function(result){
+    // tambahkan fungsi sesuai kebutuhan anda
+        console.log('pending');
+        console.log(result);
+        alert('Payment Pending');
+    },
+    errorEvent: function(result){
+    // tambahkan fungsi sesuai kebutuhan anda
+        console.log('error');
+        console.log(result);
+        alert('Payment Error');
+    },
+    closeEvent: function(result){
+    // tambahkan fungsi sesuai kebutuhan anda
+        console.log('customer closed the popup without finishing the payment');
+        console.log(result);
+        alert('customer closed the popup without finishing the payment');
     }
+}); 
 
-    var url = "https://api.scanova.io/v2/qrcode/text?data=upi%3A%2F%2Fpay%3Fpa%3Dshebinjosejacob2014%40oksbi%26pn%3DTXN965654954321%26tn%3DA%26am%3D4%26cu%3DINR%26url%3Dhttps%3A%2F%2Fcoderscafe.cf%2F&size=l&error_correction=M&data_pattern=RECT&eye_pattern=TLBR_LEAF&data_gradient_style=Radial&data_gradient_start_color=%2302c8db&data_gradient_end_color=%2302c8db&eye_color_inner=%2302c8db&eye_color_outer=%2302c8db&background_color=%23ecf0f3&logo.size=15&logo.excavated=true&logo.angle=0&poster.left=50&poster.top=50&poster.size=40&poster.eyeshape=ROUND_RECT&poster.dataPattern=ROUND&format=png&apikey=fmdtvmmwccekndkpalsltpzhvfmnpsmuhrvhpxzf";
-
-    await fetch(url)
-        .then(function(data) {
-            return data.blob();
-        })
-        .then(function(img) {
-            var image = URL.createObjectURL(img);
-            $("#home").css("display", "none");
-            $("#final").css("display", "none");
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            });
-            $('#image').attr('src', image);
-            $("#qr").css("display", "grid");
-
-        });
-    setTimeout(function(){
-        $("#qr").css("display", "none");
-        $("#success").css("display", "grid");
-            },10000);
         
 
     // window.location.href = "upi://pay?pa=shebinjosejacob2014@oksbi&pn=TXN9656549238&tn=A&am=1&cu=INR&url=https://assettracker.cf/"*/
