@@ -77,39 +77,51 @@ const loadProducts = async() => {
 }
 
 var checkoutAction = async() => {
-    
-    checkout.process("DXXXXS875LXXXX32IJZ7", {
-    defaultLanguage: "id", //opsional pengaturan bahasa
-    successEvent: function(result){
-    // tambahkan fungsi sesuai kebutuhan anda
+  try {
+    // Lakukan HTTP request untuk membuat invoice
+    let response = await fetch('https://buahsayursultan.onrender.com/create-invoice', {
+      method: 'POST', // atau 'GET', tergantung pada API
+      headers: {
+        'Content-Type': 'application/json',
+        // Tambahkan header lain yang diperlukan oleh API
+      },
+      body: JSON.stringify({
+        // Isi dengan data yang diperlukan oleh API untuk membuat invoice
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // Dapatkan data respons
+    let data = await response.json();
+
+    // Masukkan data respons ke dalam variabel dan lanjutkan dengan proses checkout
+    checkout.process(data.merchantOrderId, {
+      defaultLanguage: "id", //opsional pengaturan bahasa
+      successEvent: function(result) {
+        // Tambahkan fungsi sesuai kebutuhan anda
         console.log('success');
         console.log(result);
         alert('Payment Success');
         
-         deleteProducts();
-    },
-    pendingEvent: function(result){
-    // tambahkan fungsi sesuai kebutuhan anda
+        deleteProducts();
+      },
+      pendingEvent: function(result) {
+        // Tambahkan fungsi sesuai kebutuhan anda
         console.log('pending');
         console.log(result);
         alert('Payment Pending');
-         deleteProducts();
-    },
-    errorEvent: function(result){
-    // tambahkan fungsi sesuai kebutuhan anda
-        console.log('error');
-        console.log(result);
-        alert('Payment Error');
-         deleteProducts();
-    },
-    closeEvent: function(result){
-    // tambahkan fungsi sesuai kebutuhan anda
-        console.log('customer closed the popup without finishing the payment');
-        console.log(result);
-        alert('customer closed the popup without finishing the payment');
-         deleteProducts();
-    }
-}); 
+        
+        deleteProducts();
+      },
+      // Tambahkan event lainnya sesuai dengan yang sudah kamu definisikan
+    });
+
+  } catch (error) {
+    console.error('There has been a problem with your fetch operation:', error);
+  }
 
         
 
