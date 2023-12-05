@@ -81,7 +81,6 @@ var checkoutAction = async () => {
     let res = await axios.get(url);
     let responseText = await res.data;
     const products = responseText;
-    var len = products.length;
     var payable = 0;
     let items = [];
     for (let product of products) {
@@ -111,15 +110,25 @@ var checkoutAction = async () => {
                 // Tambahkan fungsi sesuai kebutuhan anda
                 console.log('success');
                 console.log(result);
-                alert('Payment Success');
+                setTimeout(function () {
+                    $('#success').css('display', 'grid');
+                }, 10000);
                 deleteProducts();
             }, pendingEvent: function (result) {
                 // Tambahkan fungsi sesuai kebutuhan anda
                 console.log('pending');
                 console.log(result);
-                alert('Payment Pending');
-                deleteProducts();
-            }, // Tambahkan event lainnya sesuai dengan yang sudah kamu definisikan
+            },
+            errorEvent: function (result) {
+                // tambahkan fungsi sesuai kebutuhan anda
+                console.log('error');
+                console.log(result);
+            },
+            closeEvent: function (result) {
+                // tambahkan fungsi sesuai kebutuhan anda
+                console.log('customer closed the popup without finishing the payment');
+                console.log(result);
+            }
         });
 
     } catch (error) {
