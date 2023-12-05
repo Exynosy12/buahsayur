@@ -79,7 +79,7 @@ const loadProducts = async () => {
             }
         }
 
-        document.getElementById('2').innerHTML = "CHECKOUT $" + totalPayable;
+        document.getElementById('2').innerHTML = "CHECKOUT Rp " + totalPayable;
         InitialCount += 1;
     }
 }
