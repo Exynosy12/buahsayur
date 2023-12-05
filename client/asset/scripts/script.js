@@ -119,10 +119,10 @@ var checkoutAction = async () => {
                 // Tambahkan fungsi sesuai kebutuhan anda
                 console.log('success');
                 console.log(result);
+                $('#success').css('display', 'grid');
                 setTimeout(function () {
-                    $('#success').css('display', 'grid');
+                    deleteProducts();
                 }, 10000);
-                deleteProducts();
             }, pendingEvent: function (result) {
                 // Tambahkan fungsi sesuai kebutuhan anda
                 console.log('pending');
