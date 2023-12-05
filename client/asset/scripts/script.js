@@ -38,36 +38,62 @@ const loadProducts = async () => {
         console.log(products);
         for (let product of products) {
             payable = payable + parseFloat(product.payable);
+
+            const x = `
+        <section>
+            <div class="card card-long animated fadeInUp once">
+                <img src="asset/img/${product.id}.jpg" class="album">
+                <div class="span1">Product Name</div>
+                <div class="card__product">
+                    <span>${product.name}</span>
+                </div>
+                <div class="span2">Per Unit</div>
+                <div class="card__price">
+                    <span>${product.price}</span>
+                </div>
+                <div class="span3">Units</div>
+                <div class="card__unit">
+                    <span>${product.taken} ${product.unit}</span>
+                </div>
+                <div class="span4">Payable</div>
+                <div class="card__amount">
+                    <span>${product.payable}</span>
+                </div>
+            </div>
+        </section>
+    `;
+
+            document.getElementById('home').innerHTML += x;
         }
 
-        var product = products.pop();
-        const x = `
-        <section>
-                <div class="card card-long animated fadeInUp once">
-                    <img src="asset/img/${product.id}.jpg" class="album">
-                    <div class="span1">Product Name</div>
-                    <div class="card__product">
-                        <span>${product.name}</span>
-                    </div>
-                    <div class="span2">Per Unit</div>
-                    <div class="card__price">
-                        <span>${product.price} </span>
-                    </div>
-                    <div class="span3">Units</div>
-                    <div class="card__unit">
-                        <span>${product.taken} ${product.unit}</span>
-                    </div>
+        /*        var product = products.pop();
+                const x = `
+                <section>
+                        <div class="card card-long animated fadeInUp once">
+                            <img src="asset/img/${product.id}.jpg" class="album">
+                            <div class="span1">Product Name</div>
+                            <div class="card__product">
+                                <span>${product.name}</span>
+                            </div>
+                            <div class="span2">Per Unit</div>
+                            <div class="card__price">
+                                <span>${product.price} </span>
+                            </div>
+                            <div class="span3">Units</div>
+                            <div class="card__unit">
+                                <span>${product.taken} ${product.unit}</span>
+                            </div>
 
-                    <div class="span4">Payable</div>
-                    <div class="card__amount">
-                        <span>${product.payable}</span>
-                    </div>
-                </div>
-            </section>
-        <section>
-        `
+                            <div class="span4">Payable</div>
+                            <div class="card__amount">
+                                <span>${product.payable}</span>
+                            </div>
+                        </div>
+                    </section>
+                <section>
+                `*/
 
-        document.getElementById('home').innerHTML = document.getElementById('home').innerHTML + x;
+        // document.getElementById('home').innerHTML = document.getElementById('home').innerHTML + x;
         document.getElementById('2').innerHTML = "CHECKOUT $" + payable;
         InitialCount += 1;
     }
@@ -98,8 +124,7 @@ var checkoutAction = async () => {
     try {
         url = baseUrl + '/create-invoice';
         let postData = {
-            total: payable,
-            items: items,
+            total: payable, items: items,
         };
         let res = await axios.post(url, postData);
         responseText = await res.data;
@@ -118,13 +143,11 @@ var checkoutAction = async () => {
                 // Tambahkan fungsi sesuai kebutuhan anda
                 console.log('pending');
                 console.log(result);
-            },
-            errorEvent: function (result) {
+            }, errorEvent: function (result) {
                 // tambahkan fungsi sesuai kebutuhan anda
                 console.log('error');
                 console.log(result);
-            },
-            closeEvent: function (result) {
+            }, closeEvent: function (result) {
                 // tambahkan fungsi sesuai kebutuhan anda
                 console.log('customer closed the popup without finishing the payment');
                 console.log(result);
