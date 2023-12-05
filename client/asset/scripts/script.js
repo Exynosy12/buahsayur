@@ -21,55 +21,31 @@ const deleteProducts = async () => {
     });
 }
 
+// Initialize a Set to keep track of displayed product IDs
+const displayedProductIds = new Set();
+let totalPayable = 0;
+
 const loadProducts = async () => {
-    url = baseUrl + '/product';
+    const url = baseUrl + '/product';
 
     let res = await axios.get(url);
-    responseText = await res.data;
-    const products = responseText;
+    const responseText = await res.data;
+    const products = [...responseText]; // Create a copy of the array
+
     var len = products.length;
 
     if (len > InitialCount + 1) {
         $("#1").css("display", "none");
         $("#home").css("display", "grid");
         $("#2").css("display", "grid");
-        var payable = 0;
-        const products = responseText;
+
         console.log(products);
-        document.getElementById('home').innerHTML = '';
+
         for (let product of products) {
-            payable = payable + parseFloat(product.payable);
-
-            const x = `
-        <section>
-            <div class="card card-long animated fadeInUp once">
-                <img src="asset/img/${product.id}.jpg" class="album">
-                <div class="span1">Product Name</div>
-                <div class="card__product">
-                    <span>${product.name}</span>
-                </div>
-                <div class="span2">Per Unit</div>
-                <div class="card__price">
-                    <span>${product.price}</span>
-                </div>
-                <div class="span3">Units</div>
-                <div class="card__unit">
-                    <span>${product.taken} ${product.unit}</span>
-                </div>
-                <div class="span4">Payable</div>
-                <div class="card__amount">
-                    <span>${product.payable}</span>
-                </div>
-            </div>
-        </section>
-    `;
-
-            document.getElementById('home').innerHTML += x;
-        }
-
-        /*        var product = products.pop();
+            // Check if product ID is already displayed
+            if (!displayedProductIds.has(product.id)) {
                 const x = `
-                <section>
+                    <section>
                         <div class="card card-long animated fadeInUp once">
                             <img src="asset/img/${product.id}.jpg" class="album">
                             <div class="span1">Product Name</div>
@@ -91,15 +67,21 @@ const loadProducts = async () => {
                             </div>
                         </div>
                     </section>
-                <section>
-                `*/
+                `;
 
-        // document.getElementById('home').innerHTML = document.getElementById('home').innerHTML + x;
-        document.getElementById('2').innerHTML = "CHECKOUT $" + payable;
+                document.getElementById('home').innerHTML = document.getElementById('home').innerHTML + x;
+
+                // Add the displayed product ID to the Set
+                displayedProductIds.add(product.id);
+
+                // Accumulate total payable
+                totalPayable += parseFloat(product.payable);
+            }
+        }
+
+        document.getElementById('2').innerHTML = "CHECKOUT $" + totalPayable;
         InitialCount += 1;
     }
-
-
 }
 
 var checkoutAction = async () => {
@@ -125,7 +107,8 @@ var checkoutAction = async () => {
     try {
         url = baseUrl + '/create-invoice';
         let postData = {
-            total: payable, items: items,
+            total: payable,
+            items: items,
         };
         let res = await axios.post(url, postData);
         responseText = await res.data;
@@ -138,18 +121,19 @@ var checkoutAction = async () => {
                 console.log(result);
                 setTimeout(function () {
                     $('#success').css('display', 'grid');
-                    // Call deleteProducts() after the 10-second delay
-                    deleteProducts();
                 }, 10000);
+                deleteProducts();
             }, pendingEvent: function (result) {
                 // Tambahkan fungsi sesuai kebutuhan anda
                 console.log('pending');
                 console.log(result);
-            }, errorEvent: function (result) {
+            },
+            errorEvent: function (result) {
                 // tambahkan fungsi sesuai kebutuhan anda
                 console.log('error');
                 console.log(result);
-            }, closeEvent: function (result) {
+            },
+            closeEvent: function (result) {
                 // tambahkan fungsi sesuai kebutuhan anda
                 console.log('customer closed the popup without finishing the payment');
                 console.log(result);
