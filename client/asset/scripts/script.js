@@ -1,28 +1,28 @@
 var InitialCount = -1;
 
+const sandbox = true;
 
+const baseUrl = sandbox ? "http://127.0.0.1:3000" : "https://buahsayursultan.onrender.com";
 
-const deleteProducts = async() => {
-    url = 'https://buahsayursultan.onrender.com/product';
+const deleteProducts = async () => {
+    url = baseUrl + '/product';
 
     let res = await axios.get(url);
     responseText = res.data;
     const products = responseText;
 
     for (let product of products) {
-        const response = await axios.delete(`https://buahsayursultan.onrender.com/product/${product.id}`)
+        const response = await axios.delete(`${baseUrl}/product/${product.id}`)
 
     }
     location.reload();
     window.scroll({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
+        top: 0, left: 0, behavior: 'smooth'
     });
 }
 
-const loadProducts = async() => {
-    url = 'https://buahsayursultan.onrender.com/product';
+const loadProducts = async () => {
+    url = baseUrl + '/product';
 
     let res = await axios.get(url);
     responseText = await res.data;
@@ -38,7 +38,6 @@ const loadProducts = async() => {
         console.log(products);
         for (let product of products) {
             payable = payable + parseFloat(product.payable);
-
         }
 
         var product = products.pop();
@@ -76,40 +75,58 @@ const loadProducts = async() => {
 
 }
 
-var checkoutAction = async() => {
-  try {
-    url = 'https://buahsayursultan.onrender.com/create-invoice';
-    let res = await axios.post(url);
-    responseText = await res.data;
+var checkoutAction = async () => {
+    url = baseUrl + '/product';
 
-    // Masukkan data respons ke dalam variabel dan lanjutkan dengan proses checkout
-    checkout.process(responseText.reference, {
-      defaultLanguage: "id", //opsional pengaturan bahasa
-      successEvent: function(result) {
-        // Tambahkan fungsi sesuai kebutuhan anda
-        console.log('success');
-        console.log(result);
-        alert('Payment Success');
-        
-        deleteProducts();
-      },
-      pendingEvent: function(result) {
-        // Tambahkan fungsi sesuai kebutuhan anda
-        console.log('pending');
-        console.log(result);
-        alert('Payment Pending');
-        
-        deleteProducts();
-      },
-      // Tambahkan event lainnya sesuai dengan yang sudah kamu definisikan
-    });
+    let res = await axios.get(url);
+    let responseText = await res.data;
+    const products = responseText;
+    var len = products.length;
+    var payable = 0;
+    let items = [];
+    for (let product of products) {
+        payable = payable + parseFloat(product.payable);
+        items.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            unit: product.unit,
+            taken: product.taken,
+            payable: product.payable
+        });
+    }
 
-  } catch (error) {
-    console.error('There has been a problem with your fetch operation:', error);
-  }
+    try {
+        url = baseUrl + '/create-invoice';
+        let postData = {
+            total: payable,
+            items: items,
+        };
+        let res = await axios.post(url);
+        responseText = await res.data;
+        // Masukkan data respons ke dalam variabel dan lanjutkan dengan proses checkout
+        checkout.process(responseText.reference, {
+            defaultLanguage: "id", //opsional pengaturan bahasa
+            successEvent: function (result) {
+                // Tambahkan fungsi sesuai kebutuhan anda
+                console.log('success');
+                console.log(result);
+                alert('Payment Success');
+                deleteProducts();
+            }, pendingEvent: function (result) {
+                // Tambahkan fungsi sesuai kebutuhan anda
+                console.log('pending');
+                console.log(result);
+                alert('Payment Pending');
+                deleteProducts();
+            }, // Tambahkan event lainnya sesuai dengan yang sudah kamu definisikan
+        });
 
-        
+    } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+    }
+
 
     // window.location.href = "upi://pay?pa=shebinjosejacob2014@oksbi&pn=TXN9656549238&tn=A&am=1&cu=INR&url=https://assettracker.cf/"*/
-   
+
 }
