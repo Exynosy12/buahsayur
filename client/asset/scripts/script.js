@@ -87,12 +87,12 @@ var checkoutAction = async () => {
     for (let product of products) {
         payable = payable + parseFloat(product.payable);
         items.push({
-            id: product.id,
+            id: parseInt(product.id),
             name: product.name,
-            price: product.price,
-            unit: product.unit,
-            taken: product.taken,
-            payable: product.payable
+            price: parseInt(product.price),
+            unit: parseInt(product.unit),
+            taken: parseInt(product.taken),
+            payable: parseInt(product.payable)
         });
     }
 
@@ -102,7 +102,7 @@ var checkoutAction = async () => {
             total: payable,
             items: items,
         };
-        let res = await axios.post(url);
+        let res = await axios.post(url, postData);
         responseText = await res.data;
         // Masukkan data respons ke dalam variabel dan lanjutkan dengan proses checkout
         checkout.process(responseText.reference, {
