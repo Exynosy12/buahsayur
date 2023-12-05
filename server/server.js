@@ -19,8 +19,8 @@ app.get('/', (req, res) => {
 });
 
 // Konfigurasi Duitku
-const merchantCode = 'DS17453';
-const merchantKey = '0b5182cc15e4774f6af74c0c6c5f759c';
+const merchantCode = 'DS17476';
+const merchantKey = '495e598e7ab930dca18b6327d66abe1e';
 
 
 app.post('/create-invoice', async (req, res) => {
