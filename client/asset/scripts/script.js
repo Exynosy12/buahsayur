@@ -122,7 +122,7 @@ var checkoutAction = async () => {
                 $('#success').css('display', 'grid');
                 setTimeout(function () {
                     deleteProducts();
-                }, 10000);
+                }, 4500);
             }, pendingEvent: function (result) {
                 // Tambahkan fungsi sesuai kebutuhan anda
                 console.log('pending');
