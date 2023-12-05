@@ -22,8 +22,6 @@ app.get('/', (req, res) => {
 const merchantCode = 'DS17453';
 const merchantKey = '0b5182cc15e4774f6af74c0c6c5f759c';
 
-//create callback function
-
 
 app.post('/create-invoice', async (req, res) => {
     const timestamp = Date.now().toString();
@@ -35,12 +33,12 @@ app.post('/create-invoice', async (req, res) => {
     let itemsDetail = [];
     for (let item of items) {
         itemsDetail.push({
-            name: item.name, price: item.price, quantity: item.unit,
+            name: item.name, price: parseInt(item.price), quantity: parseInt(item.unit),
         });
     }
 
     const data = {
-        paymentAmount: total, merchantOrderId: timestamp.toString(), // unique ID dari merchant
+        paymentAmount: parseInt(total), merchantOrderId: timestamp.toString(), // unique ID dari merchant
         productDetails: 'Payment', email: 'sultanhawari12@gmail.com', // email pelanggan
         callbackUrl: 'http://example.com/api-pop/backend/callback.php', // URL untuk callback
         returnUrl: 'https://tokobuahsultan.onrender.com', // URL untuk redirect
@@ -49,6 +47,7 @@ app.post('/create-invoice', async (req, res) => {
             firstName: 'Customer', lastName: 'Toko Buah Sultan',
         }, itemDetails: itemsDetail,
     };
+
 
     const config = {
         headers: {
