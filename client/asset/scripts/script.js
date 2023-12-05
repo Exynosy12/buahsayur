@@ -36,6 +36,7 @@ const loadProducts = async () => {
         var payable = 0;
         const products = responseText;
         console.log(products);
+        document.getElementById('home').innerHTML = '';
         for (let product of products) {
             payable = payable + parseFloat(product.payable);
 
@@ -137,8 +138,9 @@ var checkoutAction = async () => {
                 console.log(result);
                 setTimeout(function () {
                     $('#success').css('display', 'grid');
+                    // Call deleteProducts() after the 10-second delay
+                    deleteProducts();
                 }, 10000);
-                deleteProducts();
             }, pendingEvent: function (result) {
                 // Tambahkan fungsi sesuai kebutuhan anda
                 console.log('pending');
