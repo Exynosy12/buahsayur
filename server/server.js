@@ -11,7 +11,7 @@ let products = [];
 let orders = [];
 app.use(cors());
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
@@ -22,44 +22,32 @@ app.get('/', (req, res) => {
 const merchantCode = 'DS17453';
 const merchantKey = '0b5182cc15e4774f6af74c0c6c5f759c';
 
+//create callback function
+
+
 app.post('/create-invoice', async (req, res) => {
     const timestamp = Date.now().toString();
     const signature = crypto.createHash('sha256').update(merchantCode + timestamp + merchantKey).digest('hex');
 
-  const data = {
-        paymentAmount: 40000,
-        merchantOrderId: timestamp.toString(), // unique ID dari merchant
-        productDetails: 'Test Pay with duitku',
-        email: 'test@test.com', // email pelanggan
-        phoneNumber: '08123456789', // nomor telepon pelanggan
-        additionalParam: '',
-        merchantUserInfo: '',
-        customerVaName: 'John Doe', // nama pelanggan pada konfirmasi bank
+    let total = req.body.total;
+    let items = req.body.items;
+
+    let itemsDetail = [];
+    for (let item of items) {
+        itemsDetail.push({
+            name: item.name, price: item.price, quantity: item.unit,
+        });
+    }
+
+    const data = {
+        paymentAmount: total, merchantOrderId: timestamp.toString(), // unique ID dari merchant
+        productDetails: 'Payment', email: 'sultanhawari12@gmail.com', // email pelanggan
         callbackUrl: 'http://example.com/api-pop/backend/callback.php', // URL untuk callback
-        returnUrl: 'http://example.com/api-pop/backend/redirect.php', // URL untuk redirect
-        expiryPeriod: 10, // waktu kedaluwarsa dalam menit
+        returnUrl: 'https://tokobuahsultan.onrender.com', // URL untuk redirect
+        expiryPeriod: 5, // waktu kedaluwarsa dalam menit
         customerDetail: {
-            firstName: 'John',
-            lastName: 'Doe',
-            email: 'test@test.com',
-            phoneNumber: '08123456789',
-            billingAddress: {
-                firstName: 'John',
-                lastName: 'Doe',
-                address: 'Jl. Kembangan Raya',
-                city: 'Jakarta',
-                postalCode: '11530',
-                phone: '08123456789',
-                countryCode: 'ID'
-            },
-            shippingAddress: {
-                // Sama dengan billing address atau sesuaikan
-            }
-        },
-        itemDetails: [
-            { name: 'Test Item 1', price: 10000, quantity: 1 },
-            { name: 'Test Item 2', price: 30000, quantity: 1 }
-        ],
+            firstName: 'Customer', lastName: 'Toko Buah Sultan',
+        }, itemDetails: itemsDetail,
     };
 
     const config = {
