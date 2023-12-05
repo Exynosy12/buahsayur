@@ -33,7 +33,7 @@ app.post('/create-invoice', async (req, res) => {
     let itemsDetail = [];
     for (let item of items) {
         itemsDetail.push({
-            name: item.name, price: parseInt(item.price), quantity: parseInt(item.unit),
+            name: item.name, price: parseInt(item.payable), quantity: parseInt(item.unit),
         });
     }
 
