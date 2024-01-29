@@ -110,6 +110,9 @@ var checkoutAction = async () => {
             total: payable,
             items: items,
         };
+        console.log(postData);
+
+        
         let res = await axios.post(url, postData);
         responseText = await res.data;
         // Masukkan data respons ke dalam variabel dan lanjutkan dengan proses checkout
