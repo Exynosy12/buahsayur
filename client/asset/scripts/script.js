@@ -56,7 +56,7 @@ const loadProducts = async () => {
                             <div class="card__price">
                                 <span>${product.price} </span>
                             </div>
-                            <div class="span3">Berat Produk</div>
+                            <div class="span3">Berat</div>
                             <div class="card__unit">
                                 <span>${product.taken} ${product.unit}</span>
                             </div>
