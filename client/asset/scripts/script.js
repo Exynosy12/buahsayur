@@ -48,20 +48,20 @@ const loadProducts = async () => {
                     <section>
                         <div class="card card-long animated fadeInUp once">
                             <img src="asset/img/${product.id}.jpg" class="album">
-                            <div class="span1">Product Name</div>
+                            <div class="span1">Nama Produk</div>
                             <div class="card__product">
                                 <span>${product.name}</span>
                             </div>
-                            <div class="span2">Per Unit</div>
+                            <div class="span2">Harga /KG</div>
                             <div class="card__price">
                                 <span>${product.price} </span>
                             </div>
-                            <div class="span3">Units</div>
+                            <div class="span3">Berat Produk</div>
                             <div class="card__unit">
                                 <span>${product.taken} ${product.unit}</span>
                             </div>
 
-                            <div class="span4">Payable</div>
+                            <div class="span4">Total Harga</div>
                             <div class="card__amount">
                                 <span>${product.payable}</span>
                             </div>
@@ -79,7 +79,7 @@ const loadProducts = async () => {
             }
         }
 
-        document.getElementById('2').innerHTML = "CHECKOUT Rp" + totalPayable;
+        document.getElementById('2').innerHTML = "BAYAR Rp" + totalPayable;
         InitialCount += 1;
     }
 }
