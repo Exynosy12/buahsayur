@@ -96,9 +96,9 @@ var checkoutAction = async () => {
         payable = payable + parseFloat(product.payable);
         items.push({
             id: parseInt(product.id),
-            name: product.name,
+            name: unit: Number.isInteger(product.unit) ? product.name : product.name + " " + parseInt(product.taken) + " KG",
             price: parseInt(product.price),
-            unit: parseInt(product.unit),
+            unit: Number.isInteger(product.unit) ? parseInt(product.unit) : 1,
             taken: parseInt(product.taken),
             payable: parseInt(product.payable)
         });
